@@ -1,0 +1,71 @@
+<form class="customer-form" [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+    <div class="form-container">
+        <div class="form-main-fields">
+            <mat-form-field>
+                <mat-label>Full Name</mat-label>
+                <input type="email" matInput formControlName="fullName">
+                <mat-error *ngIf="customerForm.get('fullName').invalid">
+                    Full name must contain between 5 and 40 characters
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input type="email" matInput formControlName="email">
+                <mat-error *ngIf="customerForm.get('email').invalid">
+                    Please enter a valid email address
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div formGroupName="address" class="form-address-fields">
+            <h3>Address</h3>
+
+            <mat-form-field>
+                <mat-label>City:</mat-label>
+                <input type="text" matInput formControlName="city">
+                <mat-error *ngIf="customerForm.get('address.city').invalid">
+                    City must contain between 4 and 40 characters
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Street:</mat-label>
+                <input type="text" matInput formControlName="street">
+                <mat-error *ngIf="customerForm.get('address.street').invalid">
+                    Street name must contain between 3 and 50 characters
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>House Number:</mat-label>
+                <input type="text" matInput formControlName="houseNumber">
+                <mat-error *ngIf="customerForm.get('address.street').invalid">
+                    House number must contain between 1 and 10 characters
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Zip Code:</mat-label>
+                <input type="text" matInput formControlName="zip">
+                <mat-error *ngIf="customerForm.get('address.zip').invalid">
+                    Zip code must contain between 5 and 20 characters
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field *ngIf="customerForm.get('address.coordinates').value">
+                <mat-label>Coordinates:</mat-label>
+                <input [readonly]="true" type="text" matInput formControlName="coordinates">
+            </mat-form-field>
+
+            <div *ngIf="!customerForm.get('address.coordinates').value">
+                <mat-error *ngIf="locationError">
+                    Address must pass address validity.
+                </mat-error>
+                <button class="button " mat-raised-button (click)="checkAddressValidity()" type="button">
+                    Check Adress Validity
+                </button>
+            </div>
+        </div>
+    </div>
+    <button class="button float-right" mat-raised-button color="primary" type="submit">Submit</button>
+</form>

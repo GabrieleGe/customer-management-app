@@ -1,0 +1,22 @@
+mat-form-field {
+    width: 80%;
+}
+
+.customer-form {
+    margin-top: 2em;
+}
+
+.form-container{
+    display: flex;
+}
+.form-main-fields {
+ flex:1
+}
+
+.form-address-fields{
+    flex:1;
+}
+
+.float-right{
+    float: right;
+}

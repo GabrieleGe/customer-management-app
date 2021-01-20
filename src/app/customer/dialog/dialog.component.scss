@@ -1,0 +1,17 @@
+#dot {
+    width: 400px;
+    height: 300px;
+    border: 1px solid #aaa; /*To show the boundaries of the element*/
+}
+#dot:before {
+    position: absolute;
+    content: '';
+    background-color:#FF0000;
+    border-radius:50%;
+    opacity:0.5;
+    width: 1em;
+    height: 1em;
+    pointer-events: none;
+    left: 50%;
+    top: 50%;
+}
