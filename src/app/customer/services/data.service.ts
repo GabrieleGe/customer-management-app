@@ -28,7 +28,6 @@ export class DataService {
 
   saveCustomerInfo(customerInfo: Customer, id: string): void {
     let custumersArray = [];
-    console.log(localStorage.getItem('customers'));
     custumersArray = JSON.parse(localStorage.getItem('customers')) || [];
     const customerIndex = custumersArray.findIndex(c => c.id === id);
     customerIndex > -1 ? custumersArray[customerIndex] = customerInfo : custumersArray.push(customerInfo);
@@ -41,7 +40,6 @@ export class DataService {
 
   getCustomerById(id: string): Customer {
     const custumersArray = JSON.parse(localStorage.getItem('customers')) || [];
-
-    return custumersArray.find(c => c.id === id);
+    return custumersArray.find(c => c.id === id) || null;
   }
 }

@@ -6,8 +6,9 @@
                 <mat-card-subtitle>{{customer.email}}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
-                <div>{{customer.address.street}} {{customer.address.houseNumber}}, {{customer.address.zip}}</div>
-                <div>{{customer.address.city}}, {{customer.address.coordinates}}</div>
+                <div>{{customer.address.components.street}} {{customer.address.components.houseNumber}},
+                    {{customer.address.components.zip}}</div>
+                <div>{{customer.address.components.city}}, {{customer.address.coordinates}}</div>
             </mat-card-content>
             <mat-card-actions>
                 <button mat-button [routerLink]="['../edit', customer.id]">Edit</button>

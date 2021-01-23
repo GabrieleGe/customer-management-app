@@ -29,11 +29,13 @@ const dataServiceStub = {
       fullName: 'test test',
       email: 'test@test.te',
       address: {
-        street: 'test street',
-        city: 'Testicity',
-        zip: 'LT12345',
-        houseNumber: '5D',
-        coordinetes: '2.98324,94.47575'
+        components: {
+          street: 'test street',
+          city: 'Testicity',
+          zip: 'LT12345',
+          houseNumber: '5D',
+        },
+        coordinates: '2.98324,94.47575'
       }
     };
   }

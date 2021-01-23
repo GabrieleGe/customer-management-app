@@ -19,38 +19,39 @@
         </div>
         <div formGroupName="address" class="form-address-fields">
             <h3>Address</h3>
+            <div formGroupName="components">
+                <mat-form-field>
+                    <mat-label>City:</mat-label>
+                    <input type="text" matInput formControlName="city">
+                    <mat-error *ngIf="customerForm.get('address.components.city').invalid">
+                        City must contain between 4 and 40 characters
+                    </mat-error>
+                </mat-form-field>
 
-            <mat-form-field>
-                <mat-label>City:</mat-label>
-                <input type="text" matInput formControlName="city">
-                <mat-error *ngIf="customerForm.get('address.city').invalid">
-                    City must contain between 4 and 40 characters
-                </mat-error>
-            </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Street:</mat-label>
+                    <input type="text" matInput formControlName="street">
+                    <mat-error *ngIf="customerForm.get('address.components.street').invalid">
+                        Street name must contain between 3 and 50 characters
+                    </mat-error>
+                </mat-form-field>
 
-            <mat-form-field>
-                <mat-label>Street:</mat-label>
-                <input type="text" matInput formControlName="street">
-                <mat-error *ngIf="customerForm.get('address.street').invalid">
-                    Street name must contain between 3 and 50 characters
-                </mat-error>
-            </mat-form-field>
+                <mat-form-field>
+                    <mat-label>House Number:</mat-label>
+                    <input type="text" matInput formControlName="houseNumber">
+                    <mat-error *ngIf="customerForm.get('address.components.street').invalid">
+                        House number must contain between 1 and 10 characters
+                    </mat-error>
+                </mat-form-field>
 
-            <mat-form-field>
-                <mat-label>House Number:</mat-label>
-                <input type="text" matInput formControlName="houseNumber">
-                <mat-error *ngIf="customerForm.get('address.street').invalid">
-                    House number must contain between 1 and 10 characters
-                </mat-error>
-            </mat-form-field>
-
-            <mat-form-field>
-                <mat-label>Zip Code:</mat-label>
-                <input type="text" matInput formControlName="zip">
-                <mat-error *ngIf="customerForm.get('address.zip').invalid">
-                    Zip code must contain between 5 and 20 characters
-                </mat-error>
-            </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Zip Code:</mat-label>
+                    <input type="text" matInput formControlName="zip">
+                    <mat-error *ngIf="customerForm.get('address.components.zip').invalid">
+                        Zip code must contain between 5 and 20 characters
+                    </mat-error>
+                </mat-form-field>
+            </div>
 
             <mat-form-field *ngIf="customerForm.get('address.coordinates').value">
                 <mat-label>Coordinates:</mat-label>

@@ -1,7 +1,6 @@
+import { AddressComponents } from './address-components';
+
 export class Address {
-    city: string;
-    street: string;
-    houseNumber: string;
-    zip: string;
-    coordinetes: string;
+    components: AddressComponents;
+    coordinates: string;
 }

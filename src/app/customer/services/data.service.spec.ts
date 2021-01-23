@@ -1,8 +1,22 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { DataService } from './data.service';
+import { Customer } from '../models/customer';
 
-const localStorageMock = `[{"fullName":"Lukas Kiausinis","email":"lukas.kiausinis@gmail.com","address":{"city":"Vilnius","street":"Filaretu","houseNumber":"43","zip":"12345","coordinates":"25.312966,54.685337"},"id":"7163b428-92ba-9ce0-798d-944e1ae2f37d"}]`;
+const customer: Customer = {
+  id: '123',
+  fullName: 'test test',
+  email: 'test@test.te',
+  address: {
+    components: {
+      street: 'test street',
+      city: 'Testicity',
+      zip: 'LT12345',
+      houseNumber: '5D',
+    },
+    coordinates: '2.98324,94.47575'
+  }
+};
 
 describe('DataService', () => {
   let service: DataService;
@@ -15,6 +29,24 @@ describe('DataService', () => {
       imports: [HttpClientTestingModule]
     });
     service = TestBed.inject(DataService);
+  });
+
+  beforeEach(() => {
+    let store = {
+
+    };
+    spyOn(localStorage, 'getItem').and.callFake((key: string): string => {
+      return store[key] || null;
+    });
+    spyOn(localStorage, 'removeItem').and.callFake((key: string): void => {
+      delete store[key];
+    });
+    spyOn(localStorage, 'setItem').and.callFake((key: string, value: string): string => {
+      return store[key] = value;
+    });
+    spyOn(localStorage, 'clear').and.callFake(() => {
+      store = {};
+    });
   });
 
   it('should be created', () => {
@@ -41,11 +73,58 @@ describe('DataService', () => {
   });
 
   it('Should return existing customer info', () => {
-    spyOn(localStorage, 'getItem').and.callFake(() => {
-      return localStorageMock;
-    });
-    const customer = service.getCustomerById('123');
-    expect(customer).toEqual(JSON.parse(localStorageMock));
+    const customersArray = [];
+    customersArray.push(customer);
+
+    localStorage.setItem('customers', JSON.stringify(customersArray));
+
+    const response = service.getCustomerById('123');
+    expect(response).toEqual(customer);
+  });
+
+  it('Should return empty array as user does not exist', () => {
+    const response = service.getCustomerById('134');
+    expect(response).toBeNull();
+  });
+
+  it('Should save new customer', () => {
+    service.saveCustomerInfo(customer, '123');
+    const savedData = JSON.parse(localStorage.getItem('customers'));
+    expect(savedData.length).toBe(1);
+  });
+
+  it('Should edit existing customer customer', () => {
+    service.saveCustomerInfo(customer, '123');
+    const editedCustomer = Object.assign({}, customer);
+    editedCustomer.fullName = 'Trololo Test';
+    service.saveCustomerInfo(editedCustomer, '123');
+
+    const savedData = JSON.parse(localStorage.getItem('customers'));
+    expect(savedData.length).toBe(1);
+    const savedItem = savedData.find(c => c.id === '123');
+    expect(savedItem.fullName).toEqual('Trololo Test');
+  });
+
+  it('Should edit existing customer customer', () => {
+    service.saveCustomerInfo(customer, '123');
+    const editedCustomer = Object.assign({}, customer);
+    editedCustomer.fullName = 'Trololo Test';
+    service.saveCustomerInfo(editedCustomer, '123');
+
+    const savedData = JSON.parse(localStorage.getItem('customers'));
+    expect(savedData.length).toBe(1);
+    const savedItem = savedData.find(c => c.id === '123');
+    expect(savedItem.fullName).toEqual('Trololo Test');
+  });
+
+  it('Should save two different customers', () => {
+    service.saveCustomerInfo(customer, '123');
+    const Customer2 = Object.assign({}, customer);
+    Customer2.id = '456';
+    service.saveCustomerInfo(Customer2, '456');
+
+    const savedData = JSON.parse(localStorage.getItem('customers'));
+    expect(savedData.length).toBe(2);
   });
 });
 

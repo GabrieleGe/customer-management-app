@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Guid } from 'guid-typescript';
 import { DataService } from '../services/data.service';
 import { ActivatedRoute } from '@angular/router';
-import { merge } from 'rxjs';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import { Customer } from '../models/customer';
@@ -36,14 +35,7 @@ export class CustomerFormComponent implements OnInit {
       this.customerForm.updateValueAndValidity();
     }
 
-    const resetCoordinates = merge(...[
-      this.customerForm.get('address.street').valueChanges,
-      this.customerForm.get('address.city').valueChanges,
-      this.customerForm.get('address.houseNumber').valueChanges,
-      this.customerForm.get('address.zip').valueChanges]
-    );
-
-    resetCoordinates.subscribe(() => {
+    this.customerForm.get('address.components').valueChanges.subscribe(() => {
       this.locationError = false;
       this.customerForm.get('address.coordinates').setValue('');
       this.customerForm.updateValueAndValidity();
@@ -52,9 +44,9 @@ export class CustomerFormComponent implements OnInit {
 
 
   checkAddressValidity(): boolean {
-    if (this.isAddressFull()) {
-      const address = this.getFullAddress();
-      this.data.getCoordinates(address).subscribe(
+    if (this.customerForm.get('address.components').valid) {
+      const address = this.customerForm.get('address.components').value;
+      this.data.getCoordinates(this.getFullAddress()).subscribe(
         data => {
           this.openDialog(data.features[0].geometry.coordinates.toString());
         },
@@ -104,45 +96,40 @@ export class CustomerFormComponent implements OnInit {
         Validators.email,
       ]),
       address: new FormGroup({
-        city: new FormControl('',
-          [Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(40)
+        components: new FormGroup({
+          city: new FormControl('',
+            [Validators.required,
+            Validators.minLength(4),
+            Validators.maxLength(40)
+            ]),
+          street: new FormControl('', [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(50)
           ]),
-        street: new FormControl('', [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(50)
-        ]),
-        houseNumber: new FormControl('', [
-          Validators.required,
-          Validators.min(1),
-          Validators.minLength(1),
-          Validators.maxLength(10)
-        ]),
-        zip: new FormControl('', [
-          Validators.required,
-          Validators.minLength(5),
-          Validators.maxLength(20)
-        ]),
+          houseNumber: new FormControl('', [
+            Validators.required,
+            Validators.min(1),
+            Validators.minLength(1),
+            Validators.maxLength(10)
+          ]),
+          zip: new FormControl('', [
+            Validators.required,
+            Validators.minLength(5),
+            Validators.maxLength(20)
+          ]),
+        }),
         coordinates: new FormControl('', Validators.required)
       })
     });
 
   }
 
-  private isAddressFull(): boolean {
-    return this.customerForm.get('address.city').valid &&
-      this.customerForm.get('address.street').valid &&
-      this.customerForm.get('address.houseNumber').valid &&
-      this.customerForm.get('address.zip').valid;
-  }
-
   private getFullAddress(): string {
-    return this.customerForm.get('address.city').value + ' ' +
-      this.customerForm.get('address.street').value + ' ' +
-      this.customerForm.get('address.houseNumber').value + ' ' +
-      this.customerForm.get('address.zip').value;
+    return this.customerForm.get('address.components.city').value + ' ' +
+      this.customerForm.get('address.components.street').value + ' ' +
+      this.customerForm.get('address.components.houseNumber').value + ' ' +
+      this.customerForm.get('address.components.zip').value;
   }
 
 }
