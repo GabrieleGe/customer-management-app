@@ -13,7 +13,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { DialogComponent } from './dialog/dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { TestComponent } from '../testing/components/testing.component';
 
 @NgModule({
   declarations: [CustomerFormComponent, CustomersListComponent, DialogComponent],
@@ -29,7 +28,6 @@ import { TestComponent } from '../testing/components/testing.component';
     HttpClientModule,
     MatToolbarModule,
     MatDialogModule,
-    TestComponent,
   ]
 })
 export class CustomerModule { }

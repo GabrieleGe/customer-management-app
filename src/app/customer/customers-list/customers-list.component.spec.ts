@@ -1,6 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
 import { Customer } from '../models/customer';
 import { DataService } from '../services/data.service';
 import { CustomersListComponent } from './customers-list.component';
