@@ -12,6 +12,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { DialogComponent } from './dialog/dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { TestComponent } from '../testing/components/testing.component';
 
 @NgModule({
   declarations: [CustomerFormComponent, CustomersListComponent, DialogComponent],
@@ -25,7 +27,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatCardModule,
     MatButtonModule,
     HttpClientModule,
-    MatDialogModule
+    MatToolbarModule,
+    MatDialogModule,
+    TestComponent,
   ]
 })
 export class CustomerModule { }

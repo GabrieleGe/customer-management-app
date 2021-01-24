@@ -119,12 +119,28 @@ describe('DataService', () => {
 
   it('Should save two different customers', () => {
     service.saveCustomerInfo(customer, '123');
-    const Customer2 = Object.assign({}, customer);
-    Customer2.id = '456';
-    service.saveCustomerInfo(Customer2, '456');
+    const customer2 = Object.assign({}, customer);
+    customer2.id = '456';
+    service.saveCustomerInfo(customer2, '456');
 
     const savedData = JSON.parse(localStorage.getItem('customers'));
     expect(savedData.length).toBe(2);
+  });
+
+  it('Should return customers when empty', () => {
+    const response = service.getCustomers();
+    expect(response).toEqual([]);
+  });
+
+  it('Should return customers', () => {
+    const customersArray = [];
+    customersArray.push(customer);
+    const customer2 = Object.assign({}, customer);
+    customer2.id = '456';
+    customersArray.push(customer2);
+    localStorage.setItem('customers', JSON.stringify(customersArray));
+    const response = service.getCustomers();
+    expect(response).toEqual(customersArray);
   });
 });
 

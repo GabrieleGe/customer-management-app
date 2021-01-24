@@ -43,16 +43,15 @@ export class CustomerFormComponent implements OnInit {
   }
 
 
-  checkAddressValidity(): boolean {
+  checkAddressValidity(): void {
     if (this.customerForm.get('address.components').valid) {
-      const address = this.customerForm.get('address.components').value;
-      this.data.getCoordinates(this.getFullAddress()).subscribe(
+      const address = this.getFullAddress();
+      this.data.getCoordinates(address).subscribe(
         data => {
           this.openDialog(data.features[0].geometry.coordinates.toString());
         },
         () => this.locationError = true);
     }
-    return true;
   }
 
   onSubmit(): void {
@@ -67,16 +66,19 @@ export class CustomerFormComponent implements OnInit {
     }
   }
 
-  private openDialog(coordinates: string): void {
+  getFullAddress(): string {
+    return this.customerForm.get('address.components.city').value + ' ' +
+      this.customerForm.get('address.components.street').value + ' ' +
+      this.customerForm.get('address.components.houseNumber').value + ' ' +
+      this.customerForm.get('address.components.zip').value;
+  }
+
+  openDialog(coordinates: string): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.data = {
-      coordinates
-    };
-
+    dialogConfig.data = { coordinates };
     const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
-
     dialogRef.afterClosed().subscribe(
       data => data ? this.customerForm.get('address.coordinates').setValue(data) : this.locationError = true,
       () => this.locationError = true
@@ -125,11 +127,6 @@ export class CustomerFormComponent implements OnInit {
 
   }
 
-  private getFullAddress(): string {
-    return this.customerForm.get('address.components.city').value + ' ' +
-      this.customerForm.get('address.components.street').value + ' ' +
-      this.customerForm.get('address.components.houseNumber').value + ' ' +
-      this.customerForm.get('address.components.zip').value;
-  }
+
 
 }

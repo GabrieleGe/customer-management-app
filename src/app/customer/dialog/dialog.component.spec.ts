@@ -5,7 +5,11 @@ import { DataService } from '../services/data.service';
 import { DialogComponent } from './dialog.component';
 
 const mockDialogRef = {
-  close: jasmine.createSpy('close')
+  close(dialogResults?: any): void { }
+};
+
+const data = {
+  coordinates: '2.98324,94.47575'
 };
 
 const dataServiceStub = {
@@ -24,8 +28,8 @@ describe('DialogComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
 
       providers: [
-        { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: data },
+        { provide: MatDialogRef, useValue: mockDialogRef },
         {
           provide: DataService,
           useValue: dataServiceStub
@@ -43,5 +47,19 @@ describe('DialogComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should close dialog with no parameters', () => {
+    spyOn(mockDialogRef, 'close');
+    component.incorrectAddress();
+    expect(mockDialogRef.close).toHaveBeenCalledTimes(1);
+    expect(mockDialogRef.close).toHaveBeenCalledWith();
+  });
+
+  it('should close dialog with coordinates passed', () => {
+    spyOn(mockDialogRef, 'close');
+    component.correctAddress();
+    expect(mockDialogRef.close).toHaveBeenCalledTimes(1);
+    expect(mockDialogRef.close).toHaveBeenCalledWith('2.98324,94.47575');
   });
 });

@@ -1,5 +1,27 @@
+.customers-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
 
-    .mat-card {
-        width: 90%;
-        height: 10em;
+@media screen and (max-width: 900px) {
+    .customers-list-card {
+        flex: 1 1 100%;
+        margin: 1em;
     }
+}
+ 
+@media screen and (max-width: 1600px) and (min-width: 901px){
+    .customers-list-card {
+        flex: 1 1 40%;
+        margin: 1em;
+     }
+}
+
+@media screen and (max-width: 2200px) and (min-width: 1601px){
+    .customers-list-card {
+        flex: 1 1 20%;
+        margin: 1em;
+
+     }
+}
